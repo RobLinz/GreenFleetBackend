@@ -2,17 +2,16 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mysql');
 
-var con = sql.createConnection({
-    host    : 'http://ec2-13-58-189-112.us-east-2.compute.amazonaws.com',
-    user    : 'pi',
-    password: 'raspberry',
-    database: 'greenfleet'
-
-});
-
 //change get to post
 router.get('/', function(req, res, next) {
     console.log("a");
+    const con = sql.createConnection({
+        host    : '13.58.189.112',
+        user    : 'pi',
+        password: 'raspberry',
+        database: 'greenfleet'
+
+    });
     con.connect(function (err) {
         if(err){
             res.send('Oops!!! Couldn\'t connect to DB ' + JSON.stringify(err));
