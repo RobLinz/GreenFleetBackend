@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
     console.log("a");
     con.connect(function (err) {
         if(err){
-            res.send('Oops! Couldn\'t connect to DB ' + JSON.stringify(err));
+            res.send('Oops!!! Couldn\'t connect to DB ' + JSON.stringify(err));
         }else{
             con.query('SELECT * FROM moisture', function(error, results, fields) {
                 if(error) {
