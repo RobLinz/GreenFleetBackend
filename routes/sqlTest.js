@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
                 }
                 else {
                     con.end();
-                    res.send('results' + JSON.stringify(results)); /* usually a js object */
+                    res.send('results 2 ' + JSON.stringify(results)); /* usually a js object */
                 }
 
             });

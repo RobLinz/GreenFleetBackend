@@ -7,6 +7,12 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var sqlTest = require('./routes/sqlTest');
+var signup = require('./routes/signup');
+var validate = require('./routes/validate');
+var addPlant = require('./routes/addPlant');
+var getPlants = require('./routes/getPlants');
+var removePlant = require('./routes/removePlant');
+var getPlantTypes = require('./routes/getPlantTypes');
 
 var app = express();
 
@@ -23,7 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/sqlTest', sqlTest);
 app.use('/users', usersRouter);
-
+app.use('/signup', signup);
+app.use('/validate', validate);
+app.use('/addPlant', addPlant);
+app.use('/getPlants', getPlants);
+app.use('/removePlant', removePlant);
+app.use('/getPlantTypes', getPlantTypes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
