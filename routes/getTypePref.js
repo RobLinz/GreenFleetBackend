@@ -5,8 +5,8 @@ var jwt = require('jsonwebtoken');
 const JWTKEY = 'e3c72fbdffef434dbd5f3434fab42a9a';
 
 router.post('/', function (req, res, next) {
-    /* FOR: select dropdown of all types when adding a plant */
-    if (!req.body || !req.body.userToken) {
+    /* FOR: displaying plant climate preferences in plant modal */
+    if (!req.body || !req.body.userToken || !req.body.plantType) {
         res.send({
             response: 'missing information v'
         })
@@ -26,6 +26,7 @@ router.post('/', function (req, res, next) {
                     database: 'greenfleet'
 
                 });
+
                 con.connect(function (err) {
                     if (err) {
                         res.send({
@@ -33,18 +34,18 @@ router.post('/', function (req, res, next) {
                             error: err
                         });
                     } else {
-                        con.query(`SELECT * FROM types`, function (error, results, fields) {
-                            console.log(JSON.stringify(results));
+                        const common_name = req.body.plantType;
+                        console.log(common_name);
+                        con.query(`SELECT * FROM types WHERE common_name=${con.escape(common_name)}`, function (error, results, fields) {
                             if (error) {
                                 con.end();
                                 res.send({
-                                    response: 'couildn\'t query types for plant types',
+                                    response: 'couildn\'t query types for type data',
                                     error: error
                                 });
                             }
                             else {
-                                console.log(JSON.stringify(results));
-                                const plantTypeData = results.map(result => {
+                                const typePrefData = results.map(result => {
                                     return {
                                         common_name: result.common_name,
                                         scientific_name: result.scientific_name,
@@ -57,14 +58,16 @@ router.post('/', function (req, res, next) {
                                         soil_pref: result.soil_pref,
                                         grooming: result.grooming,
                                         humidity_pref: result.humidity_pref,
-
                                     }
                                 });
-                                con.end();
-                                res.send({
-                                    response: 'Plants types obtained and listed!',
-                                    plantTypeData,
-                                });
+                                if(typePrefData.length >0){
+                                    con.end();
+                                    res.send({
+                                        response: 'Plant Type preferences obtained!',
+                                        typePrefData: typePrefData[0],
+                                    });
+                                }
+
 
                             }
                         });

@@ -13,6 +13,7 @@ var addPlant = require('./routes/addPlant');
 var getPlants = require('./routes/getPlants');
 var removePlant = require('./routes/removePlant');
 var getPlantTypes = require('./routes/getPlantTypes');
+var getTypePref = require('./routes/getTypePref');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/addPlant', addPlant);
 app.use('/getPlants', getPlants);
 app.use('/removePlant', removePlant);
 app.use('/getPlantTypes', getPlantTypes);
+app.use('/getTypePref', getTypePref);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

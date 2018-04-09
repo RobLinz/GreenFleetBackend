@@ -36,8 +36,7 @@ router.post('/', function (req, res, next) {
                             error: err
                         });
                     } else {
-                        con.query(`SELECT * FROM plants WHERE user_id=${user_id}`, function (error, results, fields) {
-                            console.log(JSON.stringify(results));
+                        con.query(`SELECT * FROM plants JOIN types ON plants.plantType = types.common_name WHERE plants.user_id=${user_id}`, function (error, results, fields) {
                             if (error) {
                                 con.end();
                                 res.send({
@@ -46,7 +45,7 @@ router.post('/', function (req, res, next) {
                                 });
                             }
                             else {
-                                console.log(JSON.stringify(results));
+                                //console.log(JSON.stringify(results));
                                 const plantData = results.map(result => {
                                     return {
                                         plantName: result.plantName,
@@ -57,10 +56,29 @@ router.post('/', function (req, res, next) {
                                         plant_id: result.plant_id,
                                     }
                                 });
+                                let fleetTypes = results.map(result => {
+                                    return {
+                                        common_name: result.common_name,
+                                        scientific_name: result.scientific_name,
+                                        origin: result.origin,
+                                        pet_safe: result.pet_safe,
+                                        temp_low: result.temp_low,
+                                        temp_high: result.temp_high,
+                                        light_pref: result.light_pref,
+                                        watering_pref: result.watering_pref,
+                                        soil_pref: result.soil_pref,
+                                        grooming: result.grooming,
+                                        humidity_pref: result.humidity_pref,
+                                    }
+                                });
+                                let fleetTypesNames = fleetTypes.map(item => item.common_name);
+                                fleetTypes = fleetTypes.filter((item, i) => i === fleetTypesNames.indexOf(item.common_name));
+
                                 con.end();
                                 res.send({
                                     response: 'Plants obtained and listed!',
                                     plantData,
+                                    fleetTypes,
                                 });
 
                             }
