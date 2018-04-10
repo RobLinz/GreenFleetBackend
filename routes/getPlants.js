@@ -35,8 +35,9 @@ router.post('/', function (req, res, next) {
                             response: 'couildn\'t connect to db',
                             error: err
                         });
-                    } else {
-                        con.query(`SELECT * FROM plants JOIN types ON plants.plantType = types.common_name WHERE plants.user_id=${user_id}`, function (error, results, fields) {
+                    }
+                    else {
+                        con.query(`SELECT * FROM plants JOIN types ON plants.plantType = types.common_name LEFT JOIN sensors ON plants.monitor_id = sensors.monitor_id WHERE plants.user_id=${user_id}`, function (error, results, fields) {
                             if (error) {
                                 con.end();
                                 res.send({
@@ -45,7 +46,7 @@ router.post('/', function (req, res, next) {
                                 });
                             }
                             else {
-                                //console.log(JSON.stringify(results));
+                                console.log(JSON.stringify(results));
                                 const plantData = results.map(result => {
                                     return {
                                         plantName: result.plantName,
@@ -54,6 +55,11 @@ router.post('/', function (req, res, next) {
                                         monitor_id: result.monitor_id,
                                         location: result.location,
                                         plant_id: result.plant_id,
+                                        moisture_reading: result.moisture_reading,
+                                        watering_pref: result.watering_pref,
+                                        temp_reading: result.temp_reading,
+                                        temp_low: result.temp_low,
+                                        temp_high: result.temp_high,
                                     }
                                 });
                                 let fleetTypes = results.map(result => {
@@ -76,19 +82,16 @@ router.post('/', function (req, res, next) {
 
                                 con.end();
                                 res.send({
-                                    response: 'Plants obtained and listed!',
+                                    response: 'Plants, Plant Type info, and Plant sensor info obtained!',
                                     plantData,
                                     fleetTypes,
                                 });
-
                             }
                         });
                     }
                 });
-
             }
         });
     }
 });
-
 module.exports = router;

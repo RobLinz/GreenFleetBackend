@@ -5,6 +5,8 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 const JWTKEY = 'e3c72fbdffef434dbd5f3434fab42a9a';
 
+//todo ask about webtoken creation here
+
 router.post('/', function(req, res, next) {
     /* Make sure all necessary data has been included */
     if(!req.body || !req.body.username || !req.body.password || !req.body.email || !req.body.firstname || !req.body.lastname || !req.body.hasOwnProperty('pets') || !req.body.hasOwnProperty('kids') ){
@@ -64,7 +66,7 @@ router.post('/', function(req, res, next) {
                                 con.end();
                                 res.send({
                                     response: 'user added!',
-                                    token: token,
+                                    token: jwt,
                                     data: {
                                         isRegistered: true,
                                         username: req.body.username,
