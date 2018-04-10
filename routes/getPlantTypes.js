@@ -46,6 +46,7 @@ router.post('/', function (req, res, next) {
                                 console.log(JSON.stringify(results));
                                 const plantTypeData = results.map(result => {
                                     return {
+                                        type_id: result.type_id,
                                         common_name: result.common_name,
                                         scientific_name: result.scientific_name,
                                         origin: result.origin,
