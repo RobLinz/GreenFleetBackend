@@ -37,6 +37,7 @@ router.post('/', function (req, res, next) {
                         });
                     }
                     else {
+                        //todo if monitor_id isn't in sensors the monitor id will return as null !!!!! NOTE
                         con.query(`SELECT * FROM plants JOIN types ON plants.plantType = types.common_name LEFT JOIN sensors ON plants.monitor_id = sensors.monitor_id WHERE plants.user_id=${user_id}`, function (error, results, fields) {
                             if (error) {
                                 con.end();
@@ -60,6 +61,7 @@ router.post('/', function (req, res, next) {
                                         temp_reading: result.temp_reading,
                                         temp_low: result.temp_low,
                                         temp_high: result.temp_high,
+                                        pet_safe: result.pet_safe,
                                     }
                                 });
                                 let fleetTypes = results.map(result => {

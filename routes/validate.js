@@ -67,8 +67,8 @@ router.post('/', function (req, res, next) {
                                 firstname: results[0].firstname,
                                 lastname: results[0].lastname,
                                 email: results[0].email,
-                                pets: results[0].hasKids,
-                                kids: results[0].hasPets,
+                                pets: results[0].hasPets,
+                                kids: results[0].hasKids,
                             };
 
                             let token = jwt.sign({user_id: results[0].user_id}, JWTKEY);
